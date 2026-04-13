@@ -8,7 +8,12 @@ using namespace std;
 //     many types of data (int, char, string, etc.)
 //  Replace the ... with proper parameters
 template <typename flexibleType> // ???
-void printArray(...) {}
+void printArray(flexibleType arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
 
 // Implement a sequential search algorithm
 // your function should search for a target value (target)
@@ -16,25 +21,57 @@ void printArray(...) {}
 // return true if target exists in the array within this range,
 //    return false otherwise
 bool seqSearch(string target, string arr[], int start, int end) {
-    return false;
-}
+    for (int i = start; i <= end; i++) {
+        if (arr[i] == target) 
+            return true;
+        }
+        return false;
+    
+        }
+
+
 
 // Implement an iterative binary search 
 // Return true if target exists in the array with size n,
 //    return false otherwise 
-bool binSearch(float target, float arr[], int n) {
+bool binSearch(float target, float arr[], int n) { 
+    int left = 0, right = n - 1;
+    while (left <= right) { 
+        int mid = left + (right - left) / 2; 
+        if (arr[mid] == target) { 
+            return true;
+        }
+        else if (arr[mid] < target) {
+            left = mid + 1; 
+        }
+        else {
+            right = mid - 1; 
+        }
+    }
     return false;	
 }
+
 
 // Implement a recursive binary search 
 // Return true if target exists in the array with size n
 //   return false otherwise
 bool binSearchR(char target, char charray[], int n) {
-    // base case
+    if (n <= 0) {
+        return false;
+    }
 
-    //general case
+    int mid = n / 2;
+    if (charray[mid] == target) {
+        return true;
+    }
 
-    return false;
+    if (charray[mid] > target) {
+        return binSearchR(target, charray, mid);
+    }
+
+    else {
+        return binSearchR(target, charray + mid + 1, n - mid - 1);
+    }
 }
 
 // Implement Exponential Search
@@ -50,5 +87,24 @@ bool binSearchR(char target, char charray[], int n) {
 //         You may pass a pointer to the start of the window and its length,
 //         or copy that window to a temporary buffer if you prefer.
 bool expSearch(float target, float arr[], int n) {
-    return false;
+    
+    if (n <= 0 || arr == nullptr) {
+        return false;
+    }
+    if (arr[0] == target) {
+        return true;
+    }
+
+    int bound = 1;
+    while (bound < n && arr[bound] < target) {
+        if (arr[bound] == target) {
+            bound *= 2;
+        }
+    }
+
+    int left = bound / 2;
+    int right = min(bound, n -1);
+    int windowSize = (right - left) + 1;
+
+    return binSearch(target, arr + left, windowSize);
 }
